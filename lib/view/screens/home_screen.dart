@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,17 +17,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => _addTodo(),
+        onPressed: (){
+          Navigator.of(context).pushNamed("/edit");
+        },
 
       ),
       body: Container(
-
+        child: Center(child: Text("リスト一覧")),
       ),
     );
-  }
-
-  //TODO EditScreenに画面遷移する
-  _addTodo() {
-    print("FloatingButton押されたよー");
   }
 }

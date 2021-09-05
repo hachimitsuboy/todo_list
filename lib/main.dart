@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/db/database.dart';
+import 'package:todo_list/view/screens/edit_screen.dart';
 import 'package:todo_list/view/screens/home_screen.dart';
+import 'package:todo_list/view/screens/test_screen.dart';
 
-void main () => runApp(MyApp());
+late MyDatabase database;
+
+void main (){
+  database = MyDatabase();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +21,11 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       home: HomeScreen(),
+      routes: <String, WidgetBuilder>{
+        '/home':(BuildContext context) => new HomeScreen(),
+        '/edit':(BuildContext context) => new EditScreen(),
+        '/test':(BuildContext context) => new TestScreen(),
+      },
     );
   }
 }
