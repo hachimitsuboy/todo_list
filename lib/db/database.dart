@@ -9,9 +9,9 @@ part 'database.g.dart';
 class Todos extends Table {
   TextColumn get toDo => text()();
 
-  TextColumn get priority => text()();
+  IntColumn get priority => integer()();
 
-  IntColumn get deadline => integer()();
+  TextColumn get deadline => text()();
 
   @override
   // TODO: implement primaryKey
@@ -47,7 +47,7 @@ class MyDatabase extends _$MyDatabase {
 
   Future updateTodo(Todo todo) => update(todos).replace(todo);
 
-  Future deleteTodo(Todo todo) => (delete(todos)..where((tbl) => tbl.toDo.equals(todo.todo))).go();
+  Future deleteTodo(Todo todo) => (delete(todos)..where((tbl) => tbl.toDo.equals(todo.toDo))).go();
 
 
 }

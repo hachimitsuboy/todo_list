@@ -8,34 +8,34 @@ part of 'database.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Todo extends DataClass implements Insertable<Todo> {
-  final String todo;
-  final String priority;
-  final int deadline;
-  Todo({required this.todo, required this.priority, required this.deadline});
+  final String toDo;
+  final int priority;
+  final String deadline;
+  Todo({required this.toDo, required this.priority, required this.deadline});
   factory Todo.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Todo(
-      todo: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}todo'])!,
-      priority: const StringType()
+      toDo: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}to_do'])!,
+      priority: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}priority'])!,
-      deadline: const IntType()
+      deadline: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deadline'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['todo'] = Variable<String>(todo);
-    map['priority'] = Variable<String>(priority);
-    map['deadline'] = Variable<int>(deadline);
+    map['to_do'] = Variable<String>(toDo);
+    map['priority'] = Variable<int>(priority);
+    map['deadline'] = Variable<String>(deadline);
     return map;
   }
 
   TodosCompanion toCompanion(bool nullToAbsent) {
     return TodosCompanion(
-      todo: Value(todo),
+      toDo: Value(toDo),
       priority: Value(priority),
       deadline: Value(deadline),
     );
@@ -45,30 +45,30 @@ class Todo extends DataClass implements Insertable<Todo> {
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Todo(
-      todo: serializer.fromJson<String>(json['todo']),
-      priority: serializer.fromJson<String>(json['priority']),
-      deadline: serializer.fromJson<int>(json['deadline']),
+      toDo: serializer.fromJson<String>(json['toDo']),
+      priority: serializer.fromJson<int>(json['priority']),
+      deadline: serializer.fromJson<String>(json['deadline']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'todo': serializer.toJson<String>(todo),
-      'priority': serializer.toJson<String>(priority),
-      'deadline': serializer.toJson<int>(deadline),
+      'toDo': serializer.toJson<String>(toDo),
+      'priority': serializer.toJson<int>(priority),
+      'deadline': serializer.toJson<String>(deadline),
     };
   }
 
-  Todo copyWith({String? todo, String? priority, int? deadline}) => Todo(
-        todo: todo ?? this.todo,
+  Todo copyWith({String? toDo, int? priority, String? deadline}) => Todo(
+        toDo: toDo ?? this.toDo,
         priority: priority ?? this.priority,
         deadline: deadline ?? this.deadline,
       );
   @override
   String toString() {
     return (StringBuffer('Todo(')
-          ..write('todo: $todo, ')
+          ..write('toDo: $toDo, ')
           ..write('priority: $priority, ')
           ..write('deadline: $deadline')
           ..write(')'))
@@ -77,48 +77,48 @@ class Todo extends DataClass implements Insertable<Todo> {
 
   @override
   int get hashCode =>
-      $mrjf($mrjc(todo.hashCode, $mrjc(priority.hashCode, deadline.hashCode)));
+      $mrjf($mrjc(toDo.hashCode, $mrjc(priority.hashCode, deadline.hashCode)));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Todo &&
-          other.todo == this.todo &&
+          other.toDo == this.toDo &&
           other.priority == this.priority &&
           other.deadline == this.deadline);
 }
 
 class TodosCompanion extends UpdateCompanion<Todo> {
-  final Value<String> todo;
-  final Value<String> priority;
-  final Value<int> deadline;
+  final Value<String> toDo;
+  final Value<int> priority;
+  final Value<String> deadline;
   const TodosCompanion({
-    this.todo = const Value.absent(),
+    this.toDo = const Value.absent(),
     this.priority = const Value.absent(),
     this.deadline = const Value.absent(),
   });
   TodosCompanion.insert({
-    required String todo,
-    required String priority,
-    required int deadline,
-  })  : todo = Value(todo),
+    required String toDo,
+    required int priority,
+    required String deadline,
+  })  : toDo = Value(toDo),
         priority = Value(priority),
         deadline = Value(deadline);
   static Insertable<Todo> custom({
-    Expression<String>? todo,
-    Expression<String>? priority,
-    Expression<int>? deadline,
+    Expression<String>? toDo,
+    Expression<int>? priority,
+    Expression<String>? deadline,
   }) {
     return RawValuesInsertable({
-      if (todo != null) 'todo': todo,
+      if (toDo != null) 'to_do': toDo,
       if (priority != null) 'priority': priority,
       if (deadline != null) 'deadline': deadline,
     });
   }
 
   TodosCompanion copyWith(
-      {Value<String>? todo, Value<String>? priority, Value<int>? deadline}) {
+      {Value<String>? toDo, Value<int>? priority, Value<String>? deadline}) {
     return TodosCompanion(
-      todo: todo ?? this.todo,
+      toDo: toDo ?? this.toDo,
       priority: priority ?? this.priority,
       deadline: deadline ?? this.deadline,
     );
@@ -127,14 +127,14 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (todo.present) {
-      map['todo'] = Variable<String>(todo.value);
+    if (toDo.present) {
+      map['to_do'] = Variable<String>(toDo.value);
     }
     if (priority.present) {
-      map['priority'] = Variable<String>(priority.value);
+      map['priority'] = Variable<int>(priority.value);
     }
     if (deadline.present) {
-      map['deadline'] = Variable<int>(deadline.value);
+      map['deadline'] = Variable<String>(deadline.value);
     }
     return map;
   }
@@ -142,7 +142,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   @override
   String toString() {
     return (StringBuffer('TodosCompanion(')
-          ..write('todo: $todo, ')
+          ..write('toDo: $toDo, ')
           ..write('priority: $priority, ')
           ..write('deadline: $deadline')
           ..write(')'))
@@ -154,18 +154,18 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
   final GeneratedDatabase _db;
   final String? _alias;
   $TodosTable(this._db, [this._alias]);
-  final VerificationMeta _todoMeta = const VerificationMeta('todo');
+  final VerificationMeta _toDoMeta = const VerificationMeta('toDo');
   late final GeneratedColumn<String?> toDo = GeneratedColumn<String?>(
-      'todo', aliasedName, false,
+      'to_do', aliasedName, false,
       typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _priorityMeta = const VerificationMeta('priority');
-  late final GeneratedColumn<String?> priority = GeneratedColumn<String?>(
+  late final GeneratedColumn<int?> priority = GeneratedColumn<int?>(
       'priority', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
-  final VerificationMeta _deadlineMeta = const VerificationMeta('deadline');
-  late final GeneratedColumn<int?> deadline = GeneratedColumn<int?>(
-      'deadline', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _deadlineMeta = const VerificationMeta('deadline');
+  late final GeneratedColumn<String?> deadline = GeneratedColumn<String?>(
+      'deadline', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [toDo, priority, deadline];
   @override
@@ -177,11 +177,11 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('todo')) {
+    if (data.containsKey('to_do')) {
       context.handle(
-          _todoMeta, toDo.isAcceptableOrUnknown(data['todo']!, _todoMeta));
+          _toDoMeta, toDo.isAcceptableOrUnknown(data['to_do']!, _toDoMeta));
     } else if (isInserting) {
-      context.missing(_todoMeta);
+      context.missing(_toDoMeta);
     }
     if (data.containsKey('priority')) {
       context.handle(_priorityMeta,
