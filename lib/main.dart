@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
       home: HomeScreen(),
       routes: <String, WidgetBuilder>{
         '/home':(BuildContext context) => new HomeScreen(),
-        '/edit':(BuildContext context) => new EditScreen(),
         '/test':(BuildContext context) => new TestScreen(),
       },
     );
