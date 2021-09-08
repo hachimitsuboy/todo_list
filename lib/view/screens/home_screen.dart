@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (BuildContext context, int index) {
             return ListCard(
               toDo: _todoList[index],
+              setTodoList: _setTodoList,
             );
           },
         ),
@@ -75,6 +76,4 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-
-
 }

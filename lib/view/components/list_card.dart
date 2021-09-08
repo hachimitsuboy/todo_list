@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/db/database.dart';
 import 'package:todo_list/main.dart';
 
-class ListCard extends StatelessWidget {
+class ListCard extends StatefulWidget {
   final Todo toDo;
+  VoidCallback setTodoList;
 
+  ListCard({required this.toDo, required this.setTodoList});
 
-  ListCard({required this.toDo});
+  @override
+  _ListCardState createState() => _ListCardState();
+}
 
+class _ListCardState extends State<ListCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -17,8 +22,8 @@ class ListCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: ListTile(
-        title: Text(toDo.toDo),
-        subtitle: Text("期限:${toDo.deadline}"),
+        title: Text(widget.toDo.toDo),
+        subtitle: Text("期限:${widget.toDo.deadline}"),
         onLongPress: () => _tapDelete(),
         trailing: Column(
           children: [
@@ -36,7 +41,7 @@ class ListCard extends StatelessWidget {
   }
 
   Text _priorityShow() {
-    switch (toDo.priority) {
+    switch (widget.toDo.priority) {
       case 1:
         return Text(
           "高",
@@ -46,7 +51,7 @@ class ListCard extends StatelessWidget {
       case 2:
         return Text(
           "中",
-          style: TextStyle(fontSize:  18.0, color: Colors.yellow),
+          style: TextStyle(fontSize: 18.0, color: Colors.yellow),
         );
 
       case 3:
@@ -63,9 +68,9 @@ class ListCard extends StatelessWidget {
     }
   }
 
-  _tapDelete() async{
-    await database.deleteTodo(toDo);
+  _tapDelete() async {
+    await database.deleteTodo(widget.toDo);
+    widget.setTodoList();
     print("TODOを消した");
-
   }
 }
