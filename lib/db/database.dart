@@ -30,7 +30,6 @@ LazyDatabase _openConnection() {
 }
 
 @UseMoor(tables: [Todos])
-
 class MyDatabase extends _$MyDatabase {
   // we tell the database where to store the data with this constructor
   MyDatabase() : super(_openConnection());
@@ -42,12 +41,19 @@ class MyDatabase extends _$MyDatabase {
 
   //create
   Future addTodo(Todo todo) => into(todos).insert(todo);
-  //read
-  Future <List<Todo>> get allTodos => select(todos).get();
 
+  //read
+  Future<List<Todo>> get allTodos => select(todos).get();
+
+  //update
   Future updateTodo(Todo todo) => update(todos).replace(todo);
 
-  Future deleteTodo(Todo todo) => (delete(todos)..where((tbl) => tbl.toDo.equals(todo.toDo))).go();
+  //delete
+  Future deleteTodo(Todo todo) =>
+      (delete(todos)..where((tbl) => tbl.toDo.equals(todo.toDo))).go();
 
-
+  //sort
+  Future<List<Todo>> get allTodosSort => (select(todos)
+        ..orderBy([(tbl) => OrderingTerm(expression: tbl.priority)]))
+      .get();
 }

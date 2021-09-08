@@ -58,9 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _tapSort() {
+  _tapSort() async{
     //TODO 優先度順にtodoリストを並び替える
     print("優先度順に並び替える");
+    _todoList = await database.allTodosSort;
+    setState(() {
+
+    });
   }
 
   //HomeScreenにpopした時に際描画するための処理

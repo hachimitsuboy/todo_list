@@ -4,7 +4,7 @@ import 'package:todo_list/main.dart';
 
 class ListCard extends StatefulWidget {
   final Todo toDo;
-  VoidCallback setTodoList;
+  final VoidCallback setTodoList;
 
   ListCard({required this.toDo, required this.setTodoList});
 
@@ -24,7 +24,7 @@ class _ListCardState extends State<ListCard> {
       child: ListTile(
         title: Text(widget.toDo.toDo),
         subtitle: Text("期限:${widget.toDo.deadline}"),
-        onLongPress: () => _tapDelete(),
+        onLongPress: () => _tapDelete(context),
         trailing: Column(
           children: [
             SizedBox(height: 3.8),
@@ -68,9 +68,30 @@ class _ListCardState extends State<ListCard> {
     }
   }
 
-  _tapDelete() async {
-    await database.deleteTodo(widget.toDo);
-    widget.setTodoList();
+  _tapDelete(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            title: Text("確認"),
+            content: Text("Todoを削除してもよろしいですか"),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  await database.deleteTodo(widget.toDo);
+                  widget.setTodoList();
+                  Navigator.of(context).pop();
+                },
+                child: Text("はい"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("いいえ"),
+              ),
+            ],
+          ),
+    );
     print("TODOを消した");
   }
+
 }
